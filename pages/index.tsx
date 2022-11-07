@@ -82,7 +82,7 @@ const Home: NextPage = () => {
         ) : null}
 
         {startGame ? (
-          <div className="flex  gap-10">
+          <div className="flex  flex-col gap-1 md:flex-row md:gap-10">
             <div className="mx-auto flex flex-col items-center justify-center">
               <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
                 <div className="mt-6 w-96 rounded-xl  p-6 text-left hover:text-blue-600 focus:text-blue-600">
@@ -116,8 +116,8 @@ const Home: NextPage = () => {
               </div>
             </div>
             {won || lose ? null : (
-              <div className="mt-6 flex max-w-3xl flex-wrap items-center justify-center sm:w-full">
-                <div className="mt-6  rounded-xl  p-6 text-left ">
+              <div className="flex max-w-3xl flex-wrap items-center justify-center sm:w-full md:mt-6">
+                <div className="rounded-xl  p-6  text-left md:mt-6 ">
                   <Keyboard />
                 </div>
               </div>

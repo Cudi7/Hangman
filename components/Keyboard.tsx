@@ -70,13 +70,13 @@ const Keyboard = () => {
   wordGuessed && handleWon();
 
   return (
-    <div className=" flex flex-wrap gap-1  text-4xl">
+    <div className=" flex flex-wrap gap-1  text-xl md:text-4xl">
       {letters.map((letter, index) => {
         if (disabledLetters.indexOf(letter.toLowerCase()) === -1) {
           return (
             <button
               key={letter + index}
-              className=" cursor-pointer  rounded-xl border-black bg-slate-100 p-5 transition hover:text-blue-600 focus:-translate-y-1 active:translate-x-1"
+              className=" cursor-pointer  rounded-xl border-black bg-slate-100 p-2 transition hover:text-blue-600 focus:-translate-y-1 active:translate-x-1 md:p-5"
               onClick={handleClick}
               value={letter}
             >
@@ -87,7 +87,7 @@ const Keyboard = () => {
           return (
             <button
               key={letter + index}
-              className=" pointer-events-none rounded-xl border-black bg-slate-300 p-5 text-slate-400 opacity-60 "
+              className=" pointer-events-none rounded-xl border-black bg-slate-300 p-2 text-slate-400 opacity-60 md:p-5 "
             >
               {letter.toUpperCase()}
             </button>

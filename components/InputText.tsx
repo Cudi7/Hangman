@@ -15,7 +15,7 @@ const InputText = () => {
           key={index}
           className={`${
             el === "_" ? "bg-transparent" : " bg-slate-100"
-          }  h-[3rem] w-10 p-2 text-3xl font-bold`}
+          }  h-[2rem] w-10 p-1 text-lg font-bold md:h-[3rem] md:p-2 md:text-3xl`}
         >
           <span
             className={`${
