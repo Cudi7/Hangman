@@ -1,86 +1,138 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import Draw from "../components/Draw";
+import Footer from "../components/Footer";
+import InputText from "../components/InputText";
+import Keyboard from "../components/Keyboard";
+import Timer from "../components/Timer";
+import { useHangman } from "../contexts/hangman.context";
+
+const displayMessage = (message: string) => (
+  <h2 className="my-4 mt-10 max-w-2xl text-3xl font-bold md:text-4xl lg:text-5xl">
+    {message}
+  </h2>
+);
 
 const Home: NextPage = () => {
+  const {
+    currentWord,
+    handleTimeout,
+    timeout,
+    won,
+    lose,
+    generateNewWord,
+    startGame,
+    setStartGame,
+    restartHangman,
+  } = useHangman();
+
+  const canPlay = !timeout && !won && !lose && !startGame;
+
+  const handleStartNewGame = (): void => {
+    handleTimeout(false);
+    setStartGame(true);
+  };
+
+  const handleCancelGame = (): void => restartHangman();
+
+  const handleNewWord = (): void => generateNewWord();
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
-        <title>Create Next App</title>
+        <title>Hangman</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-5 text-center">
+        {startGame ? <Timer startGame={startGame} /> : null}
+        {won ? displayMessage("You Won!") : null}
+        {lose ? displayMessage("You lose!") : null}
+        {timeout ? displayMessage("Timeout!") : null}
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
+        {canPlay ? (
+          <>
+            <h1 className="mb-4 max-w-2xl text-4xl font-bold md:text-5xl lg:text-6xl">
+              Welcome to Hangman ⭐
+              <a
+                className="text-3xl text-blue-600 md:text-4xl lg:text-5xl"
+                href="https://nextjs.org"
+              >
+                {" "}
+                Guess the Flag Edition
+              </a>
+            </h1>
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
+            <p className="mt-3 text-2xl">
+              Who said{" "}
+              <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
+                Pomodoro Technique
+              </code>{" "}
+              sucks? enjoy your 5 minutes break.
             </p>
-          </a>
+          </>
+        ) : null}
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+        {startGame ? (
+          <div className="flex  gap-10">
+            <div className="mx-auto flex flex-col items-center justify-center">
+              <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
+                <div className="mt-6 w-96 rounded-xl  p-6 text-left hover:text-blue-600 focus:text-blue-600">
+                  {won ? null : <Draw />}
+                </div>
+              </div>
+              <div className=" mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
+                <div className="mt-6  rounded-xl  p-6 text-left ">
+                  {won || lose ? (
+                    <>
+                      <button
+                        type="button"
+                        className="mr-2 mb-2 rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-blue-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:shadow-lg dark:shadow-blue-800/80 dark:focus:ring-blue-800 "
+                        onClick={handleNewWord}
+                      >
+                        Next Word
+                      </button>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
+                      <button
+                        type="button"
+                        className="mr-2 mb-2 rounded-lg bg-gradient-to-r from-red-400 via-red-500 to-red-600 px-5 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-red-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-red-300 dark:shadow-lg dark:shadow-red-800/80 dark:focus:ring-red-800"
+                        onClick={handleCancelGame}
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <InputText />
+                  )}
+                </div>
+              </div>
+            </div>
+            {won || lose ? null : (
+              <div className="mt-6 flex max-w-3xl flex-wrap items-center justify-center sm:w-full">
+                <div className="mt-6  rounded-xl  p-6 text-left ">
+                  <Keyboard />
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            className={`${
+              currentWord
+                ? "cursor-pointer bg-blue-500 hover:bg-blue-300"
+                : "bg-slate-500"
+            } mt-10 inline-flex  items-center justify-center whitespace-nowrap rounded-full bg-blue-500 py-7 px-11 text-center text-2xl font-bold !leading-none text-black outline-none transition-colors duration-200  md:mt-6 md:py-5 md:px-8 xl:mt-7 xl:py-[21px] xl:px-9 2xl:mt-8 2xl:py-[26px]`}
+            onClick={handleStartNewGame}
+            disabled={currentWord ? false : true}
           >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+            Start
+          </button>
+        )}
       </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
