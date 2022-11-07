@@ -21,13 +21,8 @@ const Keyboard = () => {
     currentWordStatus[]
   >([]);
 
-  const {
-    currentWord,
-    handleFailedLetters,
-    handleGuessedLetters,
-    handleWon,
-    won,
-  } = useHangman();
+  const { currentWord, handleFailedLetters, handleGuessedLetters, handleWon } =
+    useHangman();
 
   useEffect(() => {
     if (currentWord) {
@@ -42,8 +37,8 @@ const Keyboard = () => {
     }
   }, []);
 
-  const rightAnswerAudio = new Audio(rightAnswerUrl);
-  const wrongAnswerAudio = new Audio(wrongAnswerUrl);
+  const rightAnswerAudio: HTMLAudioElement = new Audio(rightAnswerUrl);
+  const wrongAnswerAudio: HTMLAudioElement = new Audio(wrongAnswerUrl);
 
   const handleCurrentGuessedWordLetters = (letter: string): void => {
     const currentStatus = currentWordStatus.map((el) => {
@@ -71,7 +66,7 @@ const Keyboard = () => {
     setDisabledLetters([...disabledLetters, letter]);
   };
 
-  const wordGuessed = checkIfWordGuessed(currentWordStatus);
+  const wordGuessed: boolean = checkIfWordGuessed(currentWordStatus);
   wordGuessed && handleWon();
 
   return (

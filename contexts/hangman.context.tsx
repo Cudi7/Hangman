@@ -30,21 +30,19 @@ const useHangmanController = () => {
     }
   }, []);
 
-  const getRandomWord = () => Math.floor(Math.random() * words.length);
+  const getRandomWord = (): number => Math.floor(Math.random() * words.length);
 
-  const handleFailedLetters = (letter: string) => {
+  const handleFailedLetters = (letter: string): void => {
     setFailedLetters([...failedLetters, letter]);
   };
 
-  const handleGuessedLetters = (letter: string) => {
+  const handleGuessedLetters = (letter: string): void => {
     setGuessedLetters([...guessedLetters, letter]);
   };
 
-  const handleGameOver = () => setLose(true);
+  const handleGameOver = (): void => setLose(true);
 
-  const handleWon = () => setWon(true);
-
-  const handleTimeout = (value: boolean) => setTimeout(value);
+  const handleWon = (): void => setWon(true);
 
   const generateNewWord = (): void => {
     setWon(false);
@@ -70,7 +68,6 @@ const useHangmanController = () => {
     handleGuessedLetters,
     handleGameOver,
     handleWon,
-    handleTimeout,
     timeout,
     won,
     lose,
@@ -89,7 +86,6 @@ const HangmanContext = createContext<ReturnType<typeof useHangmanController>>({
   handleGuessedLetters: () => {},
   handleGameOver: () => {},
   handleWon: () => {},
-  handleTimeout: () => {},
   timeout: false,
   won: false,
   lose: false,

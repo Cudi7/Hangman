@@ -4,7 +4,7 @@ import { useHangman } from "../contexts/hangman.context";
 const Timer = ({ startGame }: { startGame: boolean }) => {
   const [timer, setTimer] = useState<number>(300);
 
-  const { handleTimeout, restartHangman } = useHangman();
+  const { restartHangman } = useHangman();
 
   useEffect(() => {
     if (startGame) {

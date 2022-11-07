@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 import Draw from "../components/Draw";
 import Footer from "../components/Footer";
 import InputText from "../components/InputText";
@@ -14,10 +14,12 @@ const displayMessage = (message: string) => (
   </h2>
 );
 
+const winGameUrl = "./sounds/win-game.wav";
+const gameOverUrl = "./sounds/game-over.wav";
+
 const Home: NextPage = () => {
   const {
     currentWord,
-    handleTimeout,
     timeout,
     won,
     lose,
@@ -27,12 +29,17 @@ const Home: NextPage = () => {
     restartHangman,
   } = useHangman();
 
+  const winAudio: HTMLAudioElement | undefined =
+    typeof Audio !== "undefined" ? new Audio(winGameUrl) : undefined;
+  const gameOverAudio: HTMLAudioElement | undefined =
+    typeof Audio !== "undefined" ? new Audio(gameOverUrl) : undefined;
+
+  won && winAudio?.play();
+  lose && gameOverAudio?.play();
+
   const canPlay = !timeout && !won && !lose && !startGame;
 
-  const handleStartNewGame = (): void => {
-    handleTimeout(false);
-    setStartGame(true);
-  };
+  const handleStartNewGame = (): void => setStartGame(true);
 
   const handleCancelGame = (): void => restartHangman();
 
@@ -83,17 +90,17 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className=" mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-                <div className="mt-6  rounded-xl  p-6 text-left ">
+                <div className="mt-6  rounded-xl  p-6  ">
                   {won || lose ? (
                     <>
+                      <InputText />
                       <button
                         type="button"
-                        className="mr-2 mb-2 rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-blue-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:shadow-lg dark:shadow-blue-800/80 dark:focus:ring-blue-800 "
+                        className="mt-5 mr-2 mb-2 rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-blue-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:shadow-lg dark:shadow-blue-800/80 dark:focus:ring-blue-800 "
                         onClick={handleNewWord}
                       >
                         Next Word
                       </button>
-
                       <button
                         type="button"
                         className="mr-2 mb-2 rounded-lg bg-gradient-to-r from-red-400 via-red-500 to-red-600 px-5 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-red-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-red-300 dark:shadow-lg dark:shadow-red-800/80 dark:focus:ring-red-800"

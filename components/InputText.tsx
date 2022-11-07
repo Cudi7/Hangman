@@ -2,9 +2,9 @@ import React from "react";
 import { useHangman } from "../contexts/hangman.context";
 
 const InputText = () => {
-  const { currentWord, guessedLetters, handleWon } = useHangman();
+  const { currentWord, guessedLetters } = useHangman();
 
-  const parsedCurrentWord = currentWord
+  const parsedCurrentWord: string | null = currentWord
     ? currentWord?.name.toUpperCase().split(" ").join("_")
     : null;
 
